@@ -35,4 +35,4 @@ InstallUtil.exe C:\{ruta_del_release_del_proyecto}\CoplacaWinService.exe
 ```
 ## Ejecutando las pruebas ⚙️
 
-En el fichero App.config encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y password de GOIA para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
+En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y password de GOIA para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
