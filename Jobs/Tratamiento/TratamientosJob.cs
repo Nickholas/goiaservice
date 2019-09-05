@@ -25,6 +25,7 @@ namespace WindowsGoiaService.Jobs.Tratamiento
 
             result = await APIConnection.tryLoginWithToken(Program.CurrentToken);
 
+            // Comprobamos si el token que teníamos almacenado en la variable <<Program.CurrentToken>> sigue siendo válido
             if (APIConnection.status == System.Net.HttpStatusCode.Unauthorized)
             {
                 result = await APIConnection.Login(Program.CurrentUser, Program.CurrentPass, Program.CurrentCoop);
@@ -47,22 +48,24 @@ namespace WindowsGoiaService.Jobs.Tratamiento
             APIConnection.setToken(Program.CurrentToken);
             result = await APIConnection.GetAsync("api/tratamiento/getall?cultivo=1");
 
+            // Comprobamos el estado de retorno de la consulta
             if (APIConnection.status == System.Net.HttpStatusCode.OK)
             {
                 try
                 {
                     List<WindowsGoiaService.Models.TratamientoViewModel> misTratamientos = new List<Models.TratamientoViewModel>();
 
-                    string mensaje = Convert.ToString(result.mensaje);
+                    // Convertimos los datos devueltos en un vector de elementos del tipo Json
                     string datos = Convert.ToString(result.data);
-
                     Newtonsoft.Json.Linq.JArray tratamientos = Newtonsoft.Json.Linq.JArray.Parse(datos) as Newtonsoft.Json.Linq.JArray;
+
+                    // Bucle para recorrer cada elemento del vector devuelto
                     foreach (var item in tratamientos)
                     {
-                        // pick out one album
+                        // Definimos el tipo del objeto json
                         Newtonsoft.Json.Linq.JObject jtratamiento = item as Newtonsoft.Json.Linq.JObject;
 
-                        // Copy to a static Album instance
+                        // Almacenamos los resultados en un listado
                         WindowsGoiaService.Models.TratamientoViewModel tratamiento = jtratamiento.ToObject<WindowsGoiaService.Models.TratamientoViewModel>();
                         misTratamientos.Add(tratamiento);
                     }

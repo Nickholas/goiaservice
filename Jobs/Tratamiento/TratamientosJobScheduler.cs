@@ -34,7 +34,7 @@ namespace WindowsGoiaService.Jobs.Tratamiento
 
             IJobDetail job = JobBuilder.Create<TratamientoJob>().Build();
 
-            // Trigger the job to run now, and then repeat every <<Program.minutosTratamiento>> minutes
+            // Disparador para ejecutar la tarea durante toda la vida cada <<Program.minutosProduccion>> minutos
             ITrigger trigger = TriggerBuilder.Create()
                 .StartNow()
                 .WithSimpleSchedule(x => x

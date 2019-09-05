@@ -20,7 +20,8 @@ namespace WindowsGoiaService
         #endregion
 
         /// <summary>
-        /// Punto de entrada principal para la aplicación.
+        /// Punto de entrada principal para la aplicación. 
+        /// Simplemente hace una llamada al constructor del Servicio de Windows.
         /// </summary>
         static void Main()
         {

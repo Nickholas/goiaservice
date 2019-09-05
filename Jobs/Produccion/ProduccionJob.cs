@@ -27,6 +27,7 @@ namespace WindowsGoiaService.Jobs.Produccion
 
             result = await APIConnection.tryLoginWithToken(Program.CurrentToken);
 
+            // Comprobamos si el token que teníamos almacenado en la variable <<Program.CurrentToken>> sigue siendo válido
             if (APIConnection.status == System.Net.HttpStatusCode.Unauthorized)
             {
                 result = await APIConnection.Login(Program.CurrentUser, Program.CurrentPass, Program.CurrentCoop);
@@ -43,13 +44,12 @@ namespace WindowsGoiaService.Jobs.Produccion
             }
 
             // *******************************************************************************************************
-            // PASO 2: CONSULTAMOS LA LISTA DE VALES DE PRODUCCION PENDIENTES
+            // PASO 2: INTENTAMOS INSERTAR UN NUEVO VALE DE PRODUCCION EN GOIA
             // *******************************************************************************************************
 
             APIConnection.setToken(Program.CurrentToken);
 
             Log.Information(".........Intentamos insertar el número de vale Nº 1.034.089...........................OK");
-
             ProduccionViewModel nuevoVale = new ProduccionViewModel();
             nuevoVale.cultivo = 1;
             nuevoVale.numvale = "1.034.089";

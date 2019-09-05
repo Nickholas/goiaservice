@@ -41,9 +41,11 @@ namespace WindowsGoiaService
             public int dwWaitHint;
         };
 
+        // Declaración de las diferentes Tareas Programadas
         private TratamientoJobScheduler tratamientoJobScheduler;
         private ProduccionJobScheduler produccionJobScheduler;
 
+        // Variable incremental de los eventos
         private int eventId;
         #endregion
 
@@ -51,32 +53,32 @@ namespace WindowsGoiaService
         {
             InitializeComponent();
 
-            //Setup Service
+            // Parámetros básicos de configuración estandar de cualquier Servicio de Windows
             this.CanStop = true;
             this.CanPauseAndContinue = true;
             this.CanShutdown = false;
-
-            //Setup logging
             this.AutoLog = false;
 
+            // Inicialización en el Visor de Sucesos de Windows para poderlo utilizar
             this.eventLogService = new EventLog();
-            this.eventLogService.Source = "CoplacaLog";
+            this.eventLogService.Source = "GoiaServiceLog";
             this.eventLogService.Log = "Application";
 
-            if (!System.Diagnostics.EventLog.SourceExists("CoplacaLog"))
+            // En caso de que no exista, lo creamos como fuente de posibles sucesos
+            if (!System.Diagnostics.EventLog.SourceExists("GoiaServiceLog"))
                 System.Diagnostics.EventLog.CreateEventSource(this.eventLogService.Source, this.eventLogService.Log);
 
-            //Inicializamos el identificador de los eventos
+            // Inicializamos el identificador de los eventos
             this.eventId = 1;
 
-            //Creamos el registro de sucesos en el subdirectorio /logs
+            // Creamos nuestro propio registro de sucesos en el subdirectorio /logs para utilizarlo con la librería <<Serilog>>
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.File(AppDomain.CurrentDomain.BaseDirectory + "\\logs\\coplaca-.log", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
+                .WriteTo.File(AppDomain.CurrentDomain.BaseDirectory + "\\logs\\goiaservice-.log", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
             //***************************************************************************
-            //INICIALIZAMOS LAS TAREAS A REALIZAR
+            //INICIALIZAMOS NUESTRAS TAREAS PROGRAMADAS QUE QUEREMOS UTILIZAR
             //***************************************************************************
             this.tratamientoJobScheduler = new TratamientoJobScheduler();
             this.produccionJobScheduler = new ProduccionJobScheduler();
@@ -89,7 +91,7 @@ namespace WindowsGoiaService
         //ponemos el servicio en estado "Pendiente de ejecución..."
         protected override void OnStart(string[] args)
         {
-            this.eventLogService.WriteEntry("Intentando iniciar el servicio CoplacaService....");
+            this.eventLogService.WriteEntry("Intentando iniciar el servicio GoiaService....");
 
             //Comprobamos que se cumplen los pre-requisitos necesarios
             string prerequisitos = CompruebaPreRequisitos();
@@ -109,7 +111,7 @@ namespace WindowsGoiaService
             //SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             //***************************************************************************
-            //COMENZAMOS LAS TAREAS A EJECUTAR
+            //COMENZAMOS LA EJECUCIÓN DE LAS TAREAS PROGRAMADAS
             //***************************************************************************
             this.tratamientoJobScheduler.Start();
             this.produccionJobScheduler.Start();
@@ -120,31 +122,31 @@ namespace WindowsGoiaService
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
             timer.Start();
 
-            // Update the service state to Running.
+            // Actualizamos el estado del servicio a <<ejecutandose>>
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            this.eventLogService.WriteEntry("Servicio CoplacaService iniciado correctamente");
+            this.eventLogService.WriteEntry("Servicio GoiaService iniciado correctamente");
         }
 
         //Otros eventos: OnPause, OnShutDown, OnContinue
         protected override void OnStop()
         {
-            this.eventLogService.WriteEntry("Intentando detener el servicio CoplacaService....");
+            this.eventLogService.WriteEntry("Intentando detener el servicio GoiaService....");
 
-            // Update the service state to Stop Pending.
+            // Actualizamos el estado del servicio a <<pendiente de parada>>
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOP_PENDING;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             //***************************************************************************
-            //DETENEMOS LAS TAREAS EN EJECUCION
+            //DETENEMOS LAS TAREAS PROGRAMADAS QUE SE ENCUENTRAN EN EJECUCION
             //****************************************************************************
             this.tratamientoJobScheduler.Stop();
             this.produccionJobScheduler.Stop();
 
-            // Update the service state to Stopped.
+            // Actualizamos el estado del servicio a <<parado>>
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
@@ -157,7 +159,7 @@ namespace WindowsGoiaService
             // Ejecutamos esta operación cada 4 horas para comprobar que todo sigue funcionando correctamente
             this.eventId++;
 
-            Log.Information("Se ha ejecutado la comprobación rutinaria del estado del servicio...........................OK");
+            Log.Information("Se ha ejecutado la comprobación rutinaria del estado del servicio GoiaService...........................OK");
 
             this.eventLogService.WriteEntry("Monitorización del Sistema.", System.Diagnostics.EventLogEntryType.Information, this.eventId);
         }
@@ -170,6 +172,8 @@ namespace WindowsGoiaService
 
         private string CompruebaPreRequisitos()
         {
+            // Tipo: String
+            // Dirección donde se encuentra publicada la API de GOIA Cooperativas
             if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("urlAPIService"))
             {
                 if (String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["urlAPIService"]))
@@ -180,6 +184,8 @@ namespace WindowsGoiaService
             else
                 return "No existe la clave <<urlAPIService>> en el fichero de configuración...........................ERROR";
 
+            // Tipo: String
+            // Email del usuario dado de alta en GOIA Cooperativas
             if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("userAPIService"))
             {
                 if (String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["userAPIService"]))
@@ -190,6 +196,8 @@ namespace WindowsGoiaService
             else
                 return "No existe la clave <<userAPIService>> en el fichero de configuración...........................ERROR";
 
+            // Tipo: String
+            // Contraseña del usuario dado de alta en GOIA Cooperativas
             if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("passAPIService"))
             {
                 if (String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["passAPIService"]))
@@ -200,6 +208,8 @@ namespace WindowsGoiaService
             else
                 return "No existe la clave <<passAPIService>> en el fichero de configuración...........................ERROR";
 
+            // Tipo: Integer
+            // Identificador único de la Cooperativa dentro de GOIA
             if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("coopAPIService"))
             {
                 if (String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["coopAPIService"]))
@@ -219,6 +229,8 @@ namespace WindowsGoiaService
             else
                 return "No existe la clave <<coopAPIService>> en el fichero de configuración...........................ERROR";
 
+            // Tipo: Integer
+            // Minutos entre cada llamada del servicio para consultar los tratamientos activos
             if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("minutosTratamiento"))
             {
                 if (String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["minutosTratamiento"]))
@@ -238,6 +250,8 @@ namespace WindowsGoiaService
             else
                 return "No existe la clave <<minutosTratamiento>> en el fichero de configuración...........................ERROR";
 
+            // Tipo: Integer
+            // Minutos entre cada llamada del servicio para insertar los vales de producción
             if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("minutosProduccion"))
             {
                 if (String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["minutosProduccion"]))
