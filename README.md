@@ -4,7 +4,7 @@ Servicio windows para la ejecución automática y periódica de llamadas a la AP
 
 ## Comenzando
 
-Este código de ejemplo puede servir como punto de partida para el desarrollo, configuración e instalación de un servicio windows, capaz de ejecutarse en cualquier equipo para el intercambio de información entre la base de datos local de cualquier cooperativa, empaquetado o empresa comercializadora y los servicios API de la plataforma GOIA.
+Este código de ejemplo puede servir como punto de partida para el desarrollo, configuración e instalación de un servicio windows capaz de ejecutarse en cualquier equipo, para el intercambio de información entre la base de datos local de una cooperativa, empaquetado o empresa comercializadora y los servicios API de la plataforma GOIA.
 
 
 ### Pre-requisitos 📋
@@ -14,7 +14,7 @@ Tener instalado Visual Studio 2015 o superior, con .Net Framework 2.5.4 o superi
 
 ### Parametrización ⚙️
 
-En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y password de GOIA para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
+En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y contraseña de una cuenta activa del módulo **GOIA - Cooperativas** para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
 
 
 ### Antes de cualquier llamada
