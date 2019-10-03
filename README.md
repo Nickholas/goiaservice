@@ -32,6 +32,31 @@ Desinstalamos el servicio
 ```
 InstallUtil.exe C:\{ruta_del_release_del_proyecto}\WindowsGoiaService.exe
 ```
+
+## Ejemplo
+
+```
+WebApiClient APIConnection = new WebApiClient(Program.CurrentUrl, Program.CurrentToken);
+
+            result = await APIConnection.tryLoginWithToken(Program.CurrentToken);
+
+            // Comprobamos si el token que teníamos almacenado en la variable <<Program.CurrentToken>> sigue siendo válido
+            if (APIConnection.status == System.Net.HttpStatusCode.Unauthorized)
+            {
+                result = await APIConnection.Login(Program.CurrentUser, Program.CurrentPass, Program.CurrentCoop);
+
+                if (APIConnection.status == System.Net.HttpStatusCode.BadRequest)
+                {
+                    Log.Error("No ha sido posible obtener un token válido con los parámetros especificados {param1}/{param2}/{param3} ", Program.CurrentCoop, Program.CurrentUser, Program.CurrentPass);
+                    return;
+                }
+                else
+                {
+                    Program.CurrentToken = result.access_token;
+                }
+            }
+```
+
 ## Ejecutando las pruebas ⚙️
 
 En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y password de GOIA para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
