@@ -1,6 +1,9 @@
 # GoiaService
 Servicio windows para la ejecución automática y periódica de llamadas a la API de GOIA
 
+## Introducción
+Este código permite la configuración e instalación de un servicio windows quepuede ejecutarse en cualquier equipo para intercambiar información entre la base de datos local de una cooperativa, empaquetado o empresa comercializadora con los servicios API de la plataforma GOIA
+
 ## Comenzando
 
 Código de ejemplo para construir un servicio que se ejecute en un entorno Windows para comunicarse periódicamente con los servicios web de GOIA (API) y obtener así la información para facilitar la integración con cualquier otra aplicación
