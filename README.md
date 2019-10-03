@@ -58,6 +58,8 @@ En caso de que no se haya podido obtener un nuevo token válido, el proceso regi
 
 ## Instalación 🔧
 
+En este apartado se explica cómo podemos desplegar este servicio en cualquier máquina con Sistema Operativo Windows. Para obtener el servicio es necesario que la solución compile correctamente. 
+
 Si el sistema no encuentra installutil.exe, asegúrese de que existe en el equipo. Esta herramienta se instala con .NET Framework en la carpeta %windir%\Microsoft.NET\Framework[64]\<[versión de Framework]> . 
 Por ejemplo, la ruta de acceso predeterminada para la versión de 64 bits es %windir%\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe.
 
