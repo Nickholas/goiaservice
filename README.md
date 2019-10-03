@@ -21,6 +21,8 @@ En el fichero **App.config** encontraremos todos los parámetros necesarios para
 
 Cada vez que se intente invocar a un servicio de GOIA, es necesario ejecutar este código para garantizar que disponemos de un token válido para establecer la conexión. En caso de que no sea así, el sistema intentará obtener uno nuevo a partir del correo electrónico y contraseña especificadas en el fichero de configuración. 
 
+Por tanto, este código debe incluirse en cualquier servicio adicional que quiera añadirse.
+
 ```
 WebApiClient APIConnection = new WebApiClient(Program.CurrentUrl, Program.CurrentToken);
 
