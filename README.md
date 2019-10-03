@@ -2,7 +2,7 @@
 Servicio windows para la ejecución automática y periódica de llamadas a la API de GOIA
 
 ## Introducción
-Este código permite la configuración e instalación de un servicio windows quepuede ejecutarse en cualquier equipo para intercambiar información entre la base de datos local de una cooperativa, empaquetado o empresa comercializadora con los servicios API de la plataforma GOIA
+Este código permite la configuración e instalación de un servicio windows en cualquier equipo para el intercambio de información entre la base de datos local de una cooperativa, empaquetado o empresa comercializadora y los servicios API de la plataforma GOIA
 
 ## Comenzando
 
