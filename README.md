@@ -14,7 +14,14 @@ Tener instalado Visual Studio 2015 o superior, con .Net Framework 2.5.4 o superi
 
 ### Parametrización ⚙️
 
-En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y contraseña de una cuenta activa del módulo **GOIA - Cooperativas** para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
+En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como:
+
+- **urlAPIService** : La dirección donde se encuentra publicada la API de GOIA.
+- **userAPIService** : Email del usuario con acceso al módulo **GOIA - Cooperativas**.
+- **passAPIService** : Contraseña del usuario con acceso al módulo **GOIA - Cooperativas**.
+- **coopAPIService** : El identificador único de la cooperativa al que nos queremos conectar.
+- **minutosTratamiento** : Los minutos entre cada ejecución del servicio para obtener los tratamientos activos.
+- **minutosProduccion** : Los minutos entre cada ejecución del servicio para enviar los datos de producción.
 
 
 ### Antes de cualquier llamada
