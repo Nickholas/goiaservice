@@ -55,7 +55,21 @@ WebApiClient APIConnection = new WebApiClient(Program.CurrentUrl, Program.Curren
 
 En caso de que no se haya podido obtener un nuevo token válido, el proceso registra el error en el visor de sucesos de windows y termina su ejecución.
 
+### La llamada
 
+Una vez obtenido el token válido del paso anterior, ya estamos listos para ejecutar la llamada a la API de GOIA, pasándole como parámetro en la cabecera de la petición dicho token. Veámos algunos ejemplos:
+
+En caso de una consulta de datos, lo haremos mediante una petición GET:
+´´´
+            APIConnection.setToken(Program.CurrentToken);
+            result = await APIConnection.GetAsync("api/tratamiento/getall?cultivo=1");
+´´´
+
+En caso de envío de datos, lo haremos mediante una petición POST:
+´´´
+            result = await APIConnection.PostAsync("api/produccion/postinserta", JsonConvert.SerializeObject(nuevoVale));
+´´´
+ 
 ## Instalación 🔧
 
 En este apartado se explica cómo podemos desplegar este servicio en cualquier máquina con Sistema Operativo Windows. Para obtener el servicio es necesario que la solución compile correctamente. 
