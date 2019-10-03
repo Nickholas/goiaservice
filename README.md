@@ -1,13 +1,50 @@
 # GoiaService
 Servicio windows para la ejecución automática y periódica de llamadas a la API de GOIA
 
+
 ## Comenzando
 
 Este código de ejemplo puede servir como punto de partida para el desarrollo, configuración e instalación de un servicio windows, capaz de ejecutarse en cualquier equipo para el intercambio de información entre la base de datos local de cualquier cooperativa, empaquetado o empresa comercializadora y los servicios API de la plataforma GOIA.
 
+
 ### Pre-requisitos 📋
 
 Tener instalado Visual Studio 2015 o superior, con .Net Framework 2.5.4 o superior y conocimientos en el lenguaje c#.
+
+
+## Ejecutando las pruebas ⚙️
+
+En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y password de GOIA para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
+
+
+### Antes de cada llamada
+
+Cada vez que se intente invocar a un servicio de GOIA, es necesario ejecutar este código para garantizar que disponemos de un token válido para establecer la conexión. En caso de que no sea así, el sistema intentará obtener uno nuevo a partir del correo electrónico y contraseña especificadas en el fichero de configuración. 
+
+```
+WebApiClient APIConnection = new WebApiClient(Program.CurrentUrl, Program.CurrentToken);
+
+            result = await APIConnection.tryLoginWithToken(Program.CurrentToken);
+
+            // Comprobamos si el token que teníamos almacenado en la variable <<Program.CurrentToken>> sigue siendo válido
+            if (APIConnection.status == System.Net.HttpStatusCode.Unauthorized)
+            {
+                result = await APIConnection.Login(Program.CurrentUser, Program.CurrentPass, Program.CurrentCoop);
+
+                if (APIConnection.status == System.Net.HttpStatusCode.BadRequest)
+                {
+                    Log.Error("No ha sido posible obtener un token válido con los parámetros especificados {param1}/{param2}/{param3} ", Program.CurrentCoop, Program.CurrentUser, Program.CurrentPass);
+                    return;
+                }
+                else
+                {
+                    Program.CurrentToken = result.access_token;
+                }
+            }
+```
+
+En caso de que no se haya podido obtener un nuevo token válido, el proceso registra el error en el visor de sucesos de windows y termina su ejecución.
+
 
 
 ### Instalación 🔧
@@ -32,31 +69,3 @@ Desinstalamos el servicio
 ```
 InstallUtil.exe C:\{ruta_del_release_del_proyecto}\WindowsGoiaService.exe
 ```
-
-## Ejemplo
-
-```
-WebApiClient APIConnection = new WebApiClient(Program.CurrentUrl, Program.CurrentToken);
-
-            result = await APIConnection.tryLoginWithToken(Program.CurrentToken);
-
-            // Comprobamos si el token que teníamos almacenado en la variable <<Program.CurrentToken>> sigue siendo válido
-            if (APIConnection.status == System.Net.HttpStatusCode.Unauthorized)
-            {
-                result = await APIConnection.Login(Program.CurrentUser, Program.CurrentPass, Program.CurrentCoop);
-
-                if (APIConnection.status == System.Net.HttpStatusCode.BadRequest)
-                {
-                    Log.Error("No ha sido posible obtener un token válido con los parámetros especificados {param1}/{param2}/{param3} ", Program.CurrentCoop, Program.CurrentUser, Program.CurrentPass);
-                    return;
-                }
-                else
-                {
-                    Program.CurrentToken = result.access_token;
-                }
-            }
-```
-
-## Ejecutando las pruebas ⚙️
-
-En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y password de GOIA para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
