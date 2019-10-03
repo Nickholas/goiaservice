@@ -9,7 +9,7 @@ Este código de ejemplo puede servir como punto de partida para el desarrollo, c
 
 ### Pre-requisitos 📋
 
-Tener instalado Visual Studio 2015 o superior, con .Net Framework 2.5.4 o superior y conocimientos en el lenguaje c#. Se puede descargar desde la dirección [Visual Studio 2019 | Community] (https://visualstudio.microsoft.com/es/thank-you-downloading-visual-studio/?sku=Community&rel=16)
+Tener instalado Visual Studio 2015 o superior, con .Net Framework 2.5.4 o superior y conocimientos en el lenguaje c#. Se puede descargar desde la dirección [Visual Studio 2019 | Community](https://visualstudio.microsoft.com/es/thank-you-downloading-visual-studio/?sku=Community&rel=16)
 
 
 ### Parametrización ⚙️
