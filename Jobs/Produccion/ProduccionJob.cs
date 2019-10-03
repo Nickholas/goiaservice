@@ -18,7 +18,7 @@ namespace WindowsGoiaService.Jobs.Produccion
             dynamic result = null;
 
             // *******************************************************************************************************
-            // PASO 1: INTENTAMOS OBTENER UN TOKEN VALIDO
+            // PASO 1: INTENTAMOS OBTENER UN TOKEN VALIDO PARA ESTABLECER LA CONEXION
             // *******************************************************************************************************
 
             Log.Information(".........Comienza la ejecución de la consulta sobre los vales de produccion pendientes...........................OK");
