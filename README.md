@@ -12,12 +12,12 @@ Este código de ejemplo puede servir como punto de partida para el desarrollo, c
 Tener instalado Visual Studio 2015 o superior, con .Net Framework 2.5.4 o superior y conocimientos en el lenguaje c#.
 
 
-## Ejecutando las pruebas ⚙️
+### Parametrización ⚙️
 
 En el fichero **App.config** encontraremos todos los parámetros necesarios para configurar nuestro servicio, tales como el usuario y password de GOIA para conectarse y obtener un token válido, los minutos entre cada ejecución del servicio, etc.
 
 
-### Antes de cada llamada
+### Antes de cualquier llamada
 
 Cada vez que se intente invocar a un servicio de GOIA, es necesario ejecutar este código para garantizar que disponemos de un token válido para establecer la conexión. En caso de que no sea así, el sistema intentará obtener uno nuevo a partir del correo electrónico y contraseña especificadas en el fichero de configuración. 
 
@@ -46,8 +46,7 @@ WebApiClient APIConnection = new WebApiClient(Program.CurrentUrl, Program.Curren
 En caso de que no se haya podido obtener un nuevo token válido, el proceso registra el error en el visor de sucesos de windows y termina su ejecución.
 
 
-
-### Instalación 🔧
+## Instalación 🔧
 
 Si el sistema no encuentra installutil.exe, asegúrese de que existe en el equipo. Esta herramienta se instala con .NET Framework en la carpeta %windir%\Microsoft.NET\Framework[64]\<[versión de Framework]> . 
 Por ejemplo, la ruta de acceso predeterminada para la versión de 64 bits es %windir%\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe.
