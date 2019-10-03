@@ -23,6 +23,7 @@ En el fichero **App.config** encontraremos todos los parámetros necesarios para
 - **minutosTratamiento** : Los minutos entre cada ejecución del servicio para obtener los tratamientos activos.
 - **minutosProduccion** : Los minutos entre cada ejecución del servicio para enviar los datos de producción.
 
+Tal y como está programado actualmente, estos parámetros son leídos y cargados en memoria durante la inicialización del servicio (línea nº 98 de archivo MainService.cs). Por tanto, en caso de que se modifique algún valor, es necesario reiniciar el servicio para que dichos cambios surtan efecto.
 
 ### Antes de cualquier llamada
 
