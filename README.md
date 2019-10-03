@@ -27,7 +27,7 @@ Tal y como está programado actualmente, estos parámetros son leídos y cargado
 
 ### Antes de cualquier llamada
 
-Cada vez que se intente invocar a un servicio de GOIA, es necesario ejecutar este código para garantizar que disponemos de un token válido para establecer la conexión. En caso de que no sea así, el sistema intentará obtener uno nuevo a partir del correo electrónico y contraseña especificadas en el fichero de configuración. 
+Cada vez que se intente invocar a cualquier servicio de GOIA, es necesario ejecutar este código para garantizar que disponemos de un token válido para establecer la conexión. En caso de que no sea así, el sistema intentará obtener uno nuevo a partir del correo electrónico y contraseña especificadas en el fichero de configuración. 
 
 Por tanto, este código debe incluirse en cualquier servicio adicional que quiera añadirse.
 
