@@ -86,11 +86,11 @@ cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319
 Instalamos el servicio
 
 ```
-InstallUtil.exe /u C:\{ruta_del_release_del_proyecto}\WindowsGoiaService.exe
+InstallUtil.exe C:\{ruta_del_release_del_proyecto}\WindowsGoiaService.exe
 ```
 
 Desinstalamos el servicio
 
 ```
-InstallUtil.exe C:\{ruta_del_release_del_proyecto}\WindowsGoiaService.exe
+InstallUtil.exe /u C:\{ruta_del_release_del_proyecto}\WindowsGoiaService.exe
 ```
